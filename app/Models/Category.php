@@ -15,15 +15,16 @@ class Category extends Model
     use HasFactory, AsSource, Attachable, Filterable;
 
     protected $fillable = [
-        'Name',
-        'Description',
-        'Image',
-        'Parent_id',
-        'Status',
+        'name',
+        'description',
+        'image',
+        'parent_id',
+        'status',
     ];
 
     //Category hasMany Products
-    public function products() {
+    public function products() 
+    {
         return $this->hasMany(Product::class,'Category_id');
     }
 
@@ -35,5 +36,10 @@ class Category extends Model
     public function children()
     {
         return $this->belongsTo(self::class,'Parent_id');
+    }
+
+    public function allChildren()
+    {
+        return $this->children()->with('allChild');
     }
 }

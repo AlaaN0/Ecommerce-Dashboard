@@ -12,14 +12,15 @@ class Brand extends Model
     use HasFactory, AsSource;
 
     protected $fillable = [
-        'Name',
-        'Description',
-        'Website',
-        'Status',
+        'name',
+        'description',
+        'website',
+        'status',
     ];
 
     //Brand HasMany Products
-    public function products() {
+    public function products() 
+    {
         return $this->hasMany(Product::class,'Brand_id');
     }
 

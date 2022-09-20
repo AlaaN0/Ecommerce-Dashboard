@@ -14,8 +14,9 @@ class ProductListScreen extends Screen
      *
      * @return array
      */
-    public function query(): array
+    public function query(Product $product): array
     {
+        $product->load('attachment');
         return [
             'products' => Product::paginate()
         ];

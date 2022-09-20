@@ -30,6 +30,7 @@ class ProductEditScreen extends Screen
      */
     public function query(Product $product): array
     {
+        $product->load('attachment');
         return [
             'product' => $product
         ];
@@ -84,57 +85,60 @@ class ProductEditScreen extends Screen
     {
         return [
             Layout::rows([
-                Input::make('product.Name')
-                    ->title('Title')
-                    ->placeholder('Product Title')
+                Input::make('product.name')
+                    ->title('Name')
+                    ->placeholder('Product Name')
                     ->help('Specify a short descriptive title for this product.'),
 
-                TextArea::make('product.Description')
+                TextArea::make('product.description')
                     ->title('Description')
                     ->rows(3)
                     ->maxlength(200)
-                    ->placeholder('Brief description for preview'),
+                    ->placeholder('Brief description for your product'),
 
-                Input::make('product.Cost_Price')
+                Input::make('product.cost_price')
                     ->title('Cost price')
                     ->type('number'),
 
-                Input::make('product.Price')
+                Input::make('product.price')
                     ->title('Product Price')
-                    ->type('number'),
+                    ->type('number')
+                    ->check('product.price' > 'product.cost_price'),
             
-                Input::make('product.Sale_Price')
+                Input::make('product.sale_price')
                     ->title('Sale Price')
                     ->type('number'),
                 
-                Input::make('product.SKU')
+                Input::make('product.sku')
                     ->title('SKU')
                     ->type('string'),
 
-                Input::make('product.Quantity')
+                Input::make('product.quantity')
                     ->title('Available quantity')
                     ->type('number'),
 
-                Picture::make('product.Featured_Image')
-                    ->title('Featured Image')->targetId()
+                Cropper::make('product.featured_image')
+                    ->title('Upload a featured image for your product')//->targetRelativeUrl()
                     ->required(),
 
-                Picture::make('product.Images')
-                    ->title('Image'),
+                Upload::make('product.attachment')
+                    ->title('Upload images for your product')
+                    ->acceptedFiles('image/*')
+                    ->targetRelativeUrl(),
 
-                Relation::make('product.Category_id')
+                Relation::make('product.category_id')
                     ->title('Category')
-                    ->fromModel(Category::class, 'Name'),
+                    ->fromModel(Category::class, 'name'),
                     
-                Relation::make('product.Brand_id')
+                Relation::make('product.brand_id')
                     ->title('Brand')
-                    ->fromModel(Brand::class, 'Name'),
+                    ->fromModel(Brand::class, 'name'),
 
-                Select::make('product.Status')
+                Select::make('product.status')
                     ->title('Product Status')
                     ->options([
-                        'active'=>'Active',
-                        'inactive'=>'Inactive'
+                        'Active'=>'Active',
+                        'Inactive'=>'Inactive'
                     ]),
 
             ])
@@ -145,7 +149,11 @@ class ProductEditScreen extends Screen
     {
         $product->fill($request->get('product'))->save();
 
-        Alert::info('You have successfully created an product.');
+        $product->attachment()->syncWithoutDetaching(
+            $request->input('product.attachment', [])
+        );
+
+        Alert::info('You have successfully created a product.');
 
         return redirect()->route('platform.product.list');
     }

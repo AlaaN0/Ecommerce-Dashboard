@@ -2,11 +2,15 @@
 
 namespace App\Orchid\Layouts;
 
+use storage;
 use Orchid\Screen\TD;
 use App\Models\Category;
+use Orchid\Attachment\File;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Table;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Http\Client\Request;
 
 class CategoryListLayout extends Table
 {
@@ -18,7 +22,7 @@ class CategoryListLayout extends Table
      *
      * @var string
      */
-    protected $target = 'categories';
+    public $target = 'categories';
 
     /**
      * Get the table cells to be displayed.
@@ -28,23 +32,45 @@ class CategoryListLayout extends Table
     protected function columns(): array
     {
         return [
+        
+            TD::make('id', 'Id'),
 
-            TD::make('id', 'Category Id')->filter(Input::make())->sort(),
-
-            TD::make('Name', 'Title')
+            TD::make('attachment', 'Image')
+                ->width('50')
                 ->render(function (Category $category) {
-                    return Link::make($category->Name)
+                    if(count($category->attachment)!=0)
+                    {
+                        $s = explode("http://localhost/", $category->attachment[0]->url);
+                        unset($s[0]);
+                        $s = implode("", $s);
+                    return "<img src='/$s' class='mw-100 d-block img-fluid'>";
+                    } else {
+                        return "<span></span>";
+                    }
+                }),
+
+            TD::make('name', 'Name')
+                ->render(function (Category $category) {
+                    return Link::make($category->name)
                         ->route('platform.category.edit', $category);
                 }),
 
-            //TD::make('Description', 'Description')->filter(Input::make())->sort(),
+            TD::make('description', 'Description'),
            // TD::make('Image', 'Image')->filter(Input::make())->sort(),
-            TD::make('Parent','Parent')
-                ->render(function (Category $category) {
-                    return e($category->Parent_id);
-                }),
+            //TD::make('parent','Parent')
+                //->render(function (Category $category) {
+                //    if(count($category->parent_id)!=0)
+                //    {$parentCategory = Category::find($category->parent_id);
+                //    return $parentCategory->name;
+                //   }
+                //    else { return NULL;}
 
-            TD::make('Status', 'Category Status'),
+                //}),
+
+            TD::make('status', 'Category Status')
+                ->render(function (Category $category) {
+                    return Link::make($category->status);
+                }),
         ];
     }
 }

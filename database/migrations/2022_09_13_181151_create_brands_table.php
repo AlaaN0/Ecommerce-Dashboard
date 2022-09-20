@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->char('Name', 16);
-            $table->text('Description')->nullable();
-            $table->string('Website');
-            $table->string('Status')->default('Active');
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('website');
+            $table->string('status')->default('Active');
             $table->timestamps();
         });
     }

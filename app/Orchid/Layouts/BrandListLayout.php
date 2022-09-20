@@ -18,7 +18,7 @@ class BrandListLayout extends Table
      *
      * @var string
      */
-    protected $target = 'brands';
+    public $target = 'brands';
 
     /**
      * Get the table cells to be displayed.
@@ -28,17 +28,25 @@ class BrandListLayout extends Table
     protected function columns(): array
     {
         return [
-            TD::make('id', 'Brand Id')->filter(Input::make())->sort(),
+            TD::make('id', 'Brand Id'),
 
-            TD::make('Name', 'Name')
+            TD::make('name', 'Name')
                 ->render(function (Brand $brand) {
-                    return Link::make($brand->Name)
+                    return Link::make($brand->name)
                         ->route('platform.brand.edit', $brand);
                 }),
 
+                TD::make('website', 'Website')
+                    ->render(function (Brand $brand) {
+                        return Link::make($brand->website);
+                }),
+
                 //TD::make('Description', 'Description')->filter(Input::make())->sort(),
-                //TD::make('Webiste', 'Brand Website')->filter(Input::make())->sort(),
-                TD::make('Status', 'Brand Status')
+                
+                TD::make('status', 'Brand Status')
+                    ->render(function (Brand $brand) {
+                        return Link::make($brand->status);
+                    }),
         ];
     }
 }

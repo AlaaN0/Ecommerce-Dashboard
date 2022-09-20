@@ -29,7 +29,8 @@ class CategoryEditScreen extends Screen
      */
     public function query(Category $category): array
     {
-        //$category->load('attachment');
+        $category->load('attachment');
+
         return [
             'category' => $category
         ];
@@ -84,34 +85,35 @@ class CategoryEditScreen extends Screen
     {
         return [
             layout::rows([
-                Input::make('category.Name')
-                    ->title('Title')
-                    ->placeholder('Category Title')
+                Input::make('category.name')
+                    ->title('Name')
+                    ->placeholder('Category Name')
                     ->help('Specify a short descriptive title for this category.'),
 
-                TextArea::make('category.Description')
+                TextArea::make('category.description')
                     ->title('Description')
                     ->rows(3)
                     ->maxlength(200)
-                    ->placeholder('Brief description for preview'),
+                    ->placeholder('Brief description for your category'),
 
 
-                Relation::make('category.Parent_id')
-                    ->title('Parent')
-                    ->fromModel(Category::class, 'Name'),
+                Upload::make('category.attachment')
+                    ->title('Category Image')
+                    ->maxFiles(1)
+                    ->targetRelativeUrl(),
+            
 
-                Select::make('category.Status')
+                Relation::make('category.parent_id')
+                    ->title('Category Parent')
+                    ->fromModel(Category::class, 'name'),
+
+                Select::make('category.status')
                     ->title('Category Status')
                     ->options([
-                        'active'=>'Active',
-                        'inactive'=>'Inactive'
+                        'Active'=>'Active',
+                        'Inactive'=>'Inactive'
                     ]),
 
-                Picture::make('category.Image')
-                    ->title('Image'),
-
-                //Upload::make('category.attachment')
-                //    ->title('All files')
             ])
         ];
     }
@@ -120,9 +122,9 @@ class CategoryEditScreen extends Screen
     public function createOrUpdate(Category $category, Request $request)
     {
         $category->fill($request->get('category'))->save();
-        //$category->attachment()->syncWithoutDetaching(
-        //    $request->input('category.Image', [])
-        //);
+        $category->attachment()->syncWithoutDetaching(
+            $request->input('category.attachment', [])
+        );
 
         Alert::info('You have successfully created an category.');
 

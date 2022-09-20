@@ -5,6 +5,8 @@ namespace App\Orchid\Screens\Categories;
 use App\Models\Category;
 use Orchid\Screen\Screen;
 use Orchid\Screen\Actions\Link;
+use Illuminate\Http\UploadedFile;
+use Orchid\Attachment\File;
 use App\Orchid\Layouts\CategoryListLayout;
 
 class CategoryListScreen extends Screen
@@ -14,8 +16,10 @@ class CategoryListScreen extends Screen
      *
      * @return array
      */
-    public function query(): array
+    public function query(Category $category): array
     {
+        $category->load('attachment');
+
         return [
             'categories' => Category::paginate()
         ];
@@ -45,7 +49,7 @@ class CategoryListScreen extends Screen
     {
         return [
             Link::make('Create new')
-                ->icon('pencil')
+                ->icon('plus')
                 ->route('platform.category.edit')
         ];
     }

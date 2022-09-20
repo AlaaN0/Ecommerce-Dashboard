@@ -5,36 +5,40 @@ namespace App\Models;
 use App\Models\Brand;
 use App\Models\Category;
 use Orchid\Screen\AsSource;
+use Orchid\Attachment\Attachable;
 use Illuminate\Database\Eloquent\Model;
+use Orchid\Attachment\Models\Attachment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-    use HasFactory, AsSource;
+    use HasFactory, AsSource, Attachable;
 
     protected $fillable = [
-        'Name',
-        'Description',
-        'Cost_Price',
-        'Price',
-        'Sale_Price',
-        'SKU',
-        'Quantity',
-        'Featured_Image',
-        'Images',
-        'Category_id',
-        'Brand_id',
-        'Status',
+        'name',
+        'description',
+        'cost_price',
+        'price',
+        'sale_price',
+        'sku',
+        'quantity',
+        'featured_image',
+        'images',
+        'category_id',
+        'brand_id',
+        'status',
         
     ];
 
     //Product BelongsToOne Category
-    public function category() {
+    public function category() 
+    {
         return $this->belongsTo(Category::class, 'Category_id');
     }
 
     //Product BelongsToOne Brand
-    public function brand() {
+    public function brand() 
+    {
         return $this->belongsTo(Brand::class, 'Brand_id');
     }
 }

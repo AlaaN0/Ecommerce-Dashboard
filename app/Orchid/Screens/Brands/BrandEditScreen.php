@@ -41,7 +41,7 @@ class BrandEditScreen extends Screen
 
     public function description(): ?string
     {
-        return "Brands Of Product";
+        return "All available brands";
     }
     /**
      * Button commands.
@@ -77,26 +77,26 @@ class BrandEditScreen extends Screen
     {
         return [
             Layout::rows([
-                Input::make('brand.Name')
-                    ->title('Title')
+                Input::make('brand.name')
+                    ->title('Name')
                     ->placeholder('Brand Title')
                     ->help('Specify a short descriptive title for this brand.'),
 
-                TextArea::make('brand.Description')
+                TextArea::make('brand.description')
                     ->title('Description')
                     ->rows(3)
                     ->maxlength(200)
-                    ->placeholder('Brief description for preview'),
+                    ->placeholder('Brief description for the brand'),
 
-                Input::make('brand.Website')
+                Input::make('brand.website')
                     ->title('Brand Website')
                     ->type('url'),
 
-                Select::make('brand.Status')
+                Select::make('brand.status')
                     ->title('Brand Status')
                     ->options([
-                        'active'=>'Active',
-                        'inactive'=>'Inactive'
+                        'Active'=>'Active',
+                        'Inactive'=>'Inactive'
                     ]),
 
             ])

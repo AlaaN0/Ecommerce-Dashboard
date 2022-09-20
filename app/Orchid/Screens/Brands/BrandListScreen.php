@@ -33,7 +33,7 @@ class BrandListScreen extends Screen
 
     public function description(): ?string 
     {
-        return 'All Brands';
+        return 'All Available Brands';
     }
     
 
@@ -45,7 +45,7 @@ class BrandListScreen extends Screen
     public function commandBar(): array
     {
         return [
-            Link::make('Create new')
+            Link::make('Create new Brand')
                 ->icon('pencil')
                 ->route('platform.brand.edit')
         ];

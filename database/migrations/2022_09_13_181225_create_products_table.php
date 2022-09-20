@@ -15,30 +15,23 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->char('Name', 16);
-            $table->text('Description');
-            $table->decimal('Cost_Price');
-            $table->decimal('Price');
-            $table->decimal('Sale_Price');
-            $table->string('SKU');
-            $table->integer('Quantity');
-            $table->string('Featured_Image');
-            $table->string('Images')->nullable();
-
-            $table->unsignedBigInteger('Category_id')->nullable();
-            $table->foreign('Category_id')
-                ->references('id')
-                ->on('categories')
-                ->onDelete('SET NULL')->onUpdate('cascade');
-            
-            $table->unsignedBigInteger('Brand_id')->nullable();
-            $table->foreign('Brand_id')
-                  ->references('id')
-                  ->on('brands')
-                  ->onDelete('SET NULL')->onUpdate('cascade');
-            $table->string('Status')->default('Active');
+            $table->string('name');
+            $table->text('description');
+            $table->integer('cost_price');
+            $table->integer('price')->contraints('cost_price' < 'price');
+            $table->integer('sale_price')->contraints(('sale_price' < 'price') AND ('sale_price' > 'cost_price'));
+            $table->string('sku');
+            $table->integer('quantity');
+            $table->string('featured_image');
+            $table->string('images')->nullable();
+            $table->foreignId('category_id')->references('id')->on('categories');
+            $table->foreignId('brand_id')->references('id')->on('brands');
+            $table->string('status')->default('Active');
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE products ADD CONSTRAINT chk_price CHECK (price > cost_price);');
+        DB::statement('ALTER TABLE products ADD CONSTRAINT chk_saleprice CHECK ((sale_price > cost_price) AND (sale_price < price));');
     }
 
     /**
