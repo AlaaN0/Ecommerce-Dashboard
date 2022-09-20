@@ -28,7 +28,7 @@ class BrandListLayout extends Table
     protected function columns(): array
     {
         return [
-            TD::make('id', 'Brand Id'),
+            TD::make('id', 'Id'),
 
             TD::make('name', 'Name')
                 ->render(function (Brand $brand) {

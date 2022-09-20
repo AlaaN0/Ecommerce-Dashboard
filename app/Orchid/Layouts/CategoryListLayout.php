@@ -35,19 +35,12 @@ class CategoryListLayout extends Table
         
             TD::make('id', 'Id'),
 
-            TD::make('attachment', 'Image')
-                ->width('50')
+            TD::make('', 'Image')
+                ->width('80')
                 ->render(function (Category $category) {
-                    if(count($category->attachment)!=0)
-                    {
-                        $s = explode("http://localhost/", $category->attachment[0]->url);
-                        unset($s[0]);
-                        $s = implode("", $s);
-                    return "<img src='/$s' class='mw-100 d-block img-fluid'>";
-                    } else {
-                        return "<span></span>";
-                    }
+                    return "<img src='{$category->image}' class='mw-100 d-block img-fluid'>";
                 }),
+            
 
             TD::make('name', 'Name')
                 ->render(function (Category $category) {
@@ -56,16 +49,15 @@ class CategoryListLayout extends Table
                 }),
 
             TD::make('description', 'Description'),
-           // TD::make('Image', 'Image')->filter(Input::make())->sort(),
-            //TD::make('parent','Parent')
-                //->render(function (Category $category) {
-                //    if(count($category->parent_id)!=0)
-                //    {$parentCategory = Category::find($category->parent_id);
-                //    return $parentCategory->name;
-                //   }
-                //    else { return NULL;}
-
-                //}),
+            TD::make('parent','Parent')
+                ->render(function (Category $category) {
+                    if($category->parent_id!=0)
+                    {
+                        $parentCategory = Category::find($category->parent_id);
+                    return $parentCategory->name;
+                   }
+                    else { return "NULL";}
+                }),
 
             TD::make('status', 'Category Status')
                 ->render(function (Category $category) {

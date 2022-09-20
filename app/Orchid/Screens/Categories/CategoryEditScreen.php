@@ -60,7 +60,7 @@ class CategoryEditScreen extends Screen
     {
         return [
             Button::make('Create category')
-                ->icon('pencil')
+                ->icon('plus')
                 ->method('createOrUpdate')
                 ->canSee(!$this->category->exists),
 
@@ -97,10 +97,9 @@ class CategoryEditScreen extends Screen
                     ->placeholder('Brief description for your category'),
 
 
-                Upload::make('category.attachment')
+                Cropper::make('category.image')
                     ->title('Category Image')
-                    ->maxFiles(1)
-                    ->targetRelativeUrl(),
+                    ->maxFiles(1),
             
 
                 Relation::make('category.parent_id')

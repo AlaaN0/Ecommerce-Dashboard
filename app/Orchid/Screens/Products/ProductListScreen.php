@@ -29,12 +29,12 @@ class ProductListScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Product';
+        return 'Products';
     }
 
     public function description(): ?string
     {
-        return 'All Products';
+        return 'All Available Products';
     }
 
     /**
@@ -46,7 +46,7 @@ class ProductListScreen extends Screen
     {
         return [
             Link::make('Create new')
-                ->icon('pencil')
+                ->icon('plus')
                 ->route('platform.product.edit')
         ];
     }

@@ -60,7 +60,7 @@ class ProductEditScreen extends Screen
     {
         return [
             Button::make('Create product')
-                ->icon('pencil')
+                ->icon('plus')
                 ->method('createOrUpdate')
                 ->canSee(!$this->product->exists),
 

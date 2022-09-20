@@ -32,10 +32,10 @@ class ProductListLayout extends Table
         
         return [
 
-            TD::make('id', 'Product Id'),
+            TD::make('id', 'Id'),
 
             TD::make('', 'Featured Image')
-                ->width('70')
+                ->width('60')
                 ->render(function (Product $product) {
                     return "<img src='{$product->featured_image}' class='mw-100 d-block img-fluid'>";
                 }),
@@ -46,29 +46,10 @@ class ProductListLayout extends Table
                         ->route('platform.product.edit', $product);
                 }),
 
-            TD::make('', 'Images')
-                ->render(function (Product $product) {
-                    $sFinal='';
-                    $openingTag="<div style='display: flex;'>";
-                    $closingTag="</div>";
-                    if(count($product->attachment)!=0)
-                    {
-                        foreach ($product->attachment as $value) {
-                            //$s = explode("http:localhost/", $value->url);
-                            //unset($s[0]);
-                            //$s = implode("", $s);
-                            $sFinal.="<div style='padding:5px;'><img src='http://localhost:8000/$value->url' style='width:50px'></div>";
-                        }
-                    return $openingTag.$sFinal.$closingTag;
-                    } else {
-                        return "<span></span>";
-                    }
-                }),
-
-            TD::make('cost_price','Cost Price')
-                ->render(function (Product $product) {
-                    return $product->cost_price.'$';
-                }),
+            //TD::make('cost_price','Cost Price')
+            //    ->render(function (Product $product) {
+            //        return $product->cost_price.'$';
+            //    }),
 
             TD::make('price','Price')
                 ->render(function (Product $product) {
@@ -103,6 +84,20 @@ class ProductListLayout extends Table
             TD::make('status', 'Category Status')
                 ->render(function (Product $product) {
                     return $product->status;
+                }),
+
+            TD::make('', 'Images')
+                ->render(function (Product $product) {
+                    $img='';
+                    if(count($product->attachment)!=0)
+                    { //in case the product has many images
+                        foreach ($product->attachment as $value) {
+                            $img.="<div style='padding:5px;'><img src='$value->url' style='width:50px'></div>";
+                        }
+                    return "<div style='display: flex;'>.$img.</div>";
+                    } else {
+                        return "<span></span>";
+                    }
                 }),
         ];
     }

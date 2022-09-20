@@ -52,7 +52,7 @@ class BrandEditScreen extends Screen
     {
         return [
             Button::make('Create brand')
-                ->icon('pencil')
+                ->icon('plus')
                 ->method('createOrUpdate')
                 ->canSee(!$this->brand->exists),
 

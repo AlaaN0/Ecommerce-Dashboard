@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->integer('cost_price');
-            $table->integer('price')->contraints('cost_price' < 'price');
-            $table->integer('sale_price')->contraints(('sale_price' < 'price') AND ('sale_price' > 'cost_price'));
+            $table->integer('price')->check ('price' > 'cost_price');
+            $table->integer('sale_price')->check(('sale_price' < 'price') AND ('sale_price' > 'cost_price'));
             $table->string('sku');
             $table->integer('quantity');
             $table->string('featured_image');
@@ -28,10 +28,10 @@ return new class extends Migration
             $table->foreignId('brand_id')->references('id')->on('brands');
             $table->string('status')->default('Active');
             $table->timestamps();
+            
         });
 
-        DB::statement('ALTER TABLE products ADD CONSTRAINT chk_price CHECK (price > cost_price);');
-        DB::statement('ALTER TABLE products ADD CONSTRAINT chk_saleprice CHECK ((sale_price > cost_price) AND (sale_price < price));');
+        
     }
 
     /**

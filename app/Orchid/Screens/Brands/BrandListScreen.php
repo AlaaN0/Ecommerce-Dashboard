@@ -46,7 +46,7 @@ class BrandListScreen extends Screen
     {
         return [
             Link::make('Create new Brand')
-                ->icon('pencil')
+                ->icon('plus')
                 ->route('platform.brand.edit')
         ];
     }

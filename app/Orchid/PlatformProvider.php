@@ -85,12 +85,10 @@ class PlatformProvider extends OrchidServiceProvider
             //    }, Color::DARK()),
 
             
-            //Menu::make('Products Management System')
-            //    ->icon('grid')
-            //    ->list([
+            
                     Menu::make(__('Categories'))
                         ->icon('list')
-                        ->title('Products Management System')
+                        ->title('Product management system')
                         ->route('platform.category.list'),
 
                     Menu::make(__('Brands'))
